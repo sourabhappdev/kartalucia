@@ -1,7 +1,6 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
-import dynamic from "next/dynamic";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MonoLabel from "@/components/ui/MonoLabel";
@@ -9,23 +8,11 @@ import { about } from "@/lib/content";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const LogoScene = dynamic(() => import("@/components/three/LogoScene"), {
-  ssr: false,
-});
-
 export default function AboutUs() {
   const sectionRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
-  const rotationRef = useRef(0);
 
   useLayoutEffect(() => {
-    // R3F occasionally measures its container as 0 on first mount and never
-    // re-measures; nudging a resize forces it to size the drawing buffer.
-    const kick = () => window.dispatchEvent(new Event("resize"));
-    const raf = requestAnimationFrame(kick);
-    const t1 = window.setTimeout(kick, 250);
-    const t2 = window.setTimeout(kick, 700);
-
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -33,18 +20,10 @@ export default function AboutUs() {
         end: "+=1600",
         pin: pinRef.current,
         scrub: true,
-        onUpdate: (self) => {
-          rotationRef.current = self.progress;
-        },
         invalidateOnRefresh: true,
       });
     }, sectionRef);
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(t1);
-      clearTimeout(t2);
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -62,11 +41,6 @@ export default function AboutUs() {
         </div>
         <div className="absolute bottom-8 left-5 z-20 md:bottom-10 md:left-8">
           <MonoLabel>{about.labelRight}</MonoLabel>
-        </div>
-
-        {/* Rotating WebGL emblem */}
-        <div className="absolute inset-0 z-0">
-          <LogoScene rotationRef={rotationRef} />
         </div>
 
         {/* Intro headline — bottom right */}
