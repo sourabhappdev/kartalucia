@@ -117,6 +117,36 @@ export const contact = {
   submit: "Submit Now",
 };
 
+export const team = {
+  label: "Meet Our Team",
+  members: [
+    {
+      name: "Sourabh Sharma",
+      role: "Founder & Creative Director",
+      description:
+        "Visionary storyteller driving the creative direction and production strategy behind every Karta Lucia project.",
+      initials: "SS",
+      accent: "#ff462e",
+    },
+    {
+      name: "Arjun Mehta",
+      role: "Head of Production",
+      description:
+        "Precision-obsessed producer who transforms bold ideas into flawless cinematic realities on time and on budget.",
+      initials: "AM",
+      accent: "#af231c",
+    },
+    {
+      name: "Priya Nair",
+      role: "Lead Designer",
+      description:
+        "Multidisciplinary creative shaping visual identities, motion systems, and immersive brand experiences.",
+      initials: "PN",
+      accent: "#ff6b4a",
+    },
+  ],
+};
+
 export const footer = {
   navTitle: "Navigation",
   nav,
