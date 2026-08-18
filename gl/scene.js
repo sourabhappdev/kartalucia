@@ -192,9 +192,8 @@ export function createCarousel(canvas, { onActiveChange } = {}) {
     beginEntry();
   }
 
-  // Start from center: position so card 0 is centred
-  const count = VIDEO_SOURCES.length;
-  scroll.state.current = count / 2;
+  // Matches GSAP start: card 7 centred (progress = CARDS-1 = 7).
+  scroll.state.current = VIDEO_SOURCES.length - 1;
   scroll.state.target = scroll.state.current;
 
   if (config.entry) parkForEntry();
@@ -334,10 +333,7 @@ export function createCarousel(canvas, { onActiveChange } = {}) {
         ? -Infinity
         : performance.now() - entryStart;
 
-    const slotOf = (i) => {
-      const slot = (i - progress) % count;
-      return slot < 0 ? slot + count : slot;
-    };
+    const slotOf = (i) => i - progress;
     const hoveredSlot = anyHovered ? slotOf(hovered) : 0;
 
     for (const [index, card] of cards.entries()) {

@@ -160,12 +160,11 @@ export const config = {
   background: "#000000",
 };
 
-// 12 video sources — cycle through available portfolio clips
 const BASE_VIDEOS = [
   `${CDN}/assets/dyPaPlBdqqtscTq3LGPgm5jPH9c.mp4`,
   `${CDN}/assets/88YT6Z2moYBbon529WtjZBj8.mp4`,
 ];
-export const VIDEO_SOURCES = Array.from({ length: 12 }, (_, i) => BASE_VIDEOS[i % BASE_VIDEOS.length]);
+export const VIDEO_SOURCES = Array.from({ length: 8 }, (_, i) => BASE_VIDEOS[i % BASE_VIDEOS.length]);
 
 // Project labels — indexed against the centred card
 export const PROJECTS = [
@@ -177,8 +176,4 @@ export const PROJECTS = [
   "Brand Film",
   "Commercial",
   "Music Video",
-  "Documentary",
-  "Short Film",
-  "Social Content",
-  "Motion Reel",
 ];

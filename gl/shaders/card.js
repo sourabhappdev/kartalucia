@@ -27,13 +27,13 @@ export const cardVertex = /* glsl */ `
   void main() {
     vUv = uv;
 
-    // Slot in the loop. The wrap is invisible because it happens inside the
-    // max-dither zone at the top and bottom of the frame.
-    float slot = mod(uIndex - uProgress, uCount);
+    // Slot — no wrap; cards scroll off into fog at each end.
+    float slot = uIndex - uProgress;
     vSlot = slot / uCount;
 
-    float baseAngle = (slot - uCount * 0.5) * uAngleStep;
-    float baseY     = (slot - uCount * 0.5) * uPitch;
+    // Centre card sits at slot 0 → angle 0, facing camera.
+    float baseAngle = slot * uAngleStep;
+    float baseY     = slot * uPitch;
 
     // Motion bend. As the helix turns, a card's ends lag behind its centre as
     // if it had some give, bowing the plane into a C that opens against the
