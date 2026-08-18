@@ -91,6 +91,8 @@ export function createScrollController(element, config) {
     element.releasePointerCapture?.(e.pointerId);
   };
 
+  let externalMode = false;
+
   element.addEventListener("wheel", onWheel, { passive: false });
   element.addEventListener("pointerdown", onPointerDown);
   window.addEventListener("pointermove", onPointerMove);
@@ -99,13 +101,6 @@ export function createScrollController(element, config) {
 
   return {
     state,
-    // Drive the carousel somewhere from outside, as a timed eased tween.
-    // Counts as input so the snap holds off and lets the travel play out
-    // instead of engaging mid-flight and hauling it back where it started.
-    //
-    // The duration and handles are copied onto the tween rather than read from
-    // config each frame, so callers with their own timing — the entry spin —
-    // don't have to borrow the click-to-centre ones.
     goTo(value, options = {}) {
       tween = {
         from: state.current,
@@ -118,7 +113,27 @@ export function createScrollController(element, config) {
       state.target = value;
       noteInput();
     },
+    setExternalProgress(value) {
+      if (!externalMode) {
+        externalMode = true;
+        element.removeEventListener("wheel", onWheel);
+        element.removeEventListener("pointerdown", onPointerDown);
+        window.removeEventListener("pointermove", onPointerMove);
+        window.removeEventListener("pointerup", onPointerUp);
+      }
+      const previous = state.current;
+      state.current = value;
+      state.target = value;
+      state.velocity = state.current - previous;
+      const capped = Math.max(
+        -config.bendMaxVelocity,
+        Math.min(config.bendMaxVelocity, state.velocity)
+      );
+      state.bendVelocity += (capped - state.bendVelocity) * config.bendEase;
+    },
     update() {
+      if (externalMode) return state.current;
+
       const previous = state.current;
 
       if (tween) {

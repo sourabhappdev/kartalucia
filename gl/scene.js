@@ -452,7 +452,11 @@ export function createCarousel(canvas, { onActiveChange } = {}) {
   resize();
   tick();
 
-  return function dispose() {
+  return {
+    setExternalProgress(value) {
+      scroll.setExternalProgress(value);
+    },
+    dispose() {
     cancelAnimationFrame(frame);
     clearTimeout(entryWait);
     window.removeEventListener("resize", onResize);
@@ -484,5 +488,6 @@ export function createCarousel(canvas, { onActiveChange } = {}) {
       v.load();
     });
     renderer.dispose();
+    },
   };
 }
