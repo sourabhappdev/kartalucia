@@ -7,9 +7,41 @@ import { useSmoothScroll } from "@/components/providers/SmoothScroll";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const linksRef = useRef<HTMLUListElement>(null);
   const { scrollTo, stop, start } = useSmoothScroll();
+
+  // Toggle the glass background once the nav has scrolled past the hero, and
+  // hide it again while the nav sits over the hero. An IntersectionObserver is
+  // used (not scroll events) so it works with Lenis smooth scroll; opacity is
+  // CSS-transitioned so it fades in and out.
+  useEffect(() => {
+    const hero = document.getElementById("hero");
+    if (!hero) return;
+
+    let observer: IntersectionObserver | null = null;
+
+    const setup = () => {
+      observer?.disconnect();
+      const headerH = headerRef.current?.offsetHeight ?? 72;
+      // Root's top edge sits at the header's bottom; once the hero clears it the
+      // hero stops intersecting and the glass fades in.
+      observer = new IntersectionObserver(
+        ([entry]) => setPastHero(!entry.isIntersecting),
+        { rootMargin: `-${headerH}px 0px 0px 0px`, threshold: 0 }
+      );
+      observer.observe(hero);
+    };
+
+    setup();
+    window.addEventListener("resize", setup);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", setup);
+    };
+  }, []);
 
   // Animate the full-screen overlay open/closed.
   useEffect(() => {
@@ -56,7 +88,16 @@ export default function Nav() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 h-[60px] md:h-[72px]">
+      <header
+        ref={headerRef}
+        className="fixed inset-x-0 top-0 z-50 h-[60px] md:h-[72px]"
+      >
+        {/* Glass background — fades in once scrolled past the hero */}
+        <div
+          className={`pointer-events-none absolute inset-0 border-b border-[var(--line)] bg-black/30 backdrop-blur-md transition-opacity duration-500 ease-out ${
+            pastHero ? "opacity-100" : "opacity-0"
+          }`}
+        />
         <div className="relative flex h-full items-center justify-between px-5 md:px-8">
           <div className="flex flex-1 items-center gap-6">
             <nav className="hidden items-center gap-6 md:flex">
