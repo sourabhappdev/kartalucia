@@ -2,6 +2,19 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ */
+/*  Bamboly Demo font                                                  */
+/* ------------------------------------------------------------------ */
+@font-face {
+  font-family: "Bamboly Demo";
+  src: url("https://db.onlinewebfonts.com/t/58ee300970307a1cc399e6bebd7617ce.woff2") format("woff2"),
+       url("https://db.onlinewebfonts.com/t/58ee300970307a1cc399e6bebd7617ce.woff") format("woff"),
+       url("https://db.onlinewebfonts.com/t/58ee300970307a1cc399e6bebd7617ce.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ------------------------------------------------------------------ */
 /*  Design tokens — captured from kartalucia.com                       */
 /* ------------------------------------------------------------------ */
 :root {
@@ -14,6 +27,7 @@
   --accent: #af231c;      /* number circles, progress */
   --flare: #ff462e;       /* bright red-orange */
   --flare-soft: rgba(255, 70, 46, 0.1);
+  --section-gap: clamp(4rem, 6vw, 6rem);
 }
 
 @theme inline {
@@ -105,6 +119,18 @@ html.lenis body {
 }
 .marquee-viewport:hover .marquee-track {
   animation-play-state: paused;
+}
+
+/* Social marquee */
+@keyframes social-marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.social-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: social-marquee-scroll 18s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

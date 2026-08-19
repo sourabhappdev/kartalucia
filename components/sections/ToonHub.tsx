@@ -116,6 +116,7 @@ export default function ToonHub() {
   return (
     <div
       className="relative w-full overflow-hidden bg-[var(--canvas)]"
+      style={{ paddingTop: "var(--section-gap)" }}
     >
       <div className="relative w-full" style={{ height: "100vh", overflow: "hidden" }}>
         {/* Grain overlay */}
@@ -154,9 +155,20 @@ export default function ToonHub() {
         </div>
 
         {/* Top-left brand label */}
-        <div className="absolute left-4 top-6 sm:left-8" style={{ zIndex: 60 }}>
-          <span className="text-xs font-semibold uppercase" style={{ color: "white", opacity: 0.9, letterSpacing: "0.18em" }}>
-            TOONHUB
+        <div className="absolute left-5 top-6 sm:left-8" style={{ zIndex: 60 }}>
+          <span
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "3vw",
+              fontWeight: 700,
+              color: "white",
+              opacity: 0.9,
+              letterSpacing: "-0.02em",
+              lineHeight: 0.9,
+              textTransform: "uppercase",
+            }}
+          >
+            OUR TEAM
           </span>
         </div>
 
@@ -179,7 +191,7 @@ export default function ToonHub() {
 
         {/* Bottom-left text + nav buttons */}
         <div
-          className="absolute bottom-6 left-4 sm:bottom-20 sm:left-24"
+          className="absolute bottom-8 left-4 sm:bottom-24 sm:left-24"
           style={{ zIndex: 60, maxWidth: 380 }}
         >
           <p
