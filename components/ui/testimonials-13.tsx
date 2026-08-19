@@ -90,7 +90,7 @@ const Testimonials = () => (
     <p className="mt-3.5 text-center text-muted-foreground text-xl tracking-[-0.015em] md:text-2xl">
       Real stories from people who use and love our product every day
     </p>
-    <div className="mask-x-from-80% mt-14 space-y-px border bg-muted">
+    <div className="mask-x-from-80% mt-14 space-y-px border bg-background">
       <Marquee className="py-0 [--duration:60s] [--gap:0px]" pauseOnHover>
         <TestimonialList />
       </Marquee>
