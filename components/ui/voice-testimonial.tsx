@@ -28,7 +28,13 @@ const seededRandom = (seed: number) => {
 };
 
 const NUM_BARS = 30;
-const waveHeights = Array.from({ length: NUM_BARS }, (_, i) => seededRandom(i + 1) * 20 + 5);
+// Round to 2 decimals so the SSR string and the client string are byte-identical.
+// Math.sin isn't bit-identical across JS engines (Node vs mobile Safari/Chrome),
+// so the raw float would differ in its low digits and trip a hydration mismatch.
+const waveHeights = Array.from(
+  { length: NUM_BARS },
+  (_, i) => Math.round((seededRandom(i + 1) * 20 + 5) * 100) / 100
+);
 const waveVariants: Variants[] = Array.from({ length: NUM_BARS }, (_, i) => ({
   initial: {
     scaleY: 1.5,
