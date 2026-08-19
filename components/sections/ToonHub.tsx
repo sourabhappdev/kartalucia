@@ -4,10 +4,10 @@ import { useState, useEffect, useCallback } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const IMAGES = [
-  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/1.02464a56.png", bg: "#F4845F", panel: "#F79B7F" },
-  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/2.b977faab.png", bg: "#6BBF7A", panel: "#85CC92" },
-  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/3.4df853b4.png", bg: "#E882B4", panel: "#ED9DC4" },
-  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/4.4457fbce.png", bg: "#6EB5FF", panel: "#8DC4FF" },
+  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/1.02464a56.png", name: "BLAZE", role: "Creative Director", about: "Leads the visual identity and creative strategy behind every campaign, shaping bold narratives that resonate." },
+  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/2.b977faab.png", name: "FERN", role: "Motion Designer", about: "Brings ideas to life through fluid animations and cinematic motion graphics that captivate audiences." },
+  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/3.4df853b4.png", name: "ROSA", role: "Brand Strategist", about: "Crafts compelling brand stories and positioning strategies that create lasting cultural impact." },
+  { src: "https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/4.4457fbce.png", name: "AZURE", role: "3D Artist", about: "Sculpts and renders hyper-detailed 3D figurines and environments with meticulous precision." },
 ];
 
 type Role = "center" | "left" | "right" | "back";
@@ -36,8 +36,8 @@ function roleStyles(role: Role, isMobile: boolean): React.CSSProperties {
       opacity: 1,
       zIndex: 20,
       left: "50%",
-      height: isMobile ? "60%" : "92%",
-      bottom: isMobile ? "22%" : "0%",
+      height: isMobile ? "50%" : "65%",
+      bottom: isMobile ? "5%" : "0%",
     };
   }
 
@@ -130,12 +130,13 @@ export default function ToonHub() {
           }}
         />
 
-        {/* Giant ghost text */}
+        {/* Giant ghost text — dynamic character name */}
         <div
           className="pointer-events-none absolute inset-x-0 flex items-center justify-center select-none"
           style={{ zIndex: 2, top: "18%" }}
         >
           <span
+            key={activeIndex}
             style={{
               fontFamily: "'Anton', sans-serif",
               fontSize: "clamp(90px, 28vw, 380px)",
@@ -148,7 +149,7 @@ export default function ToonHub() {
               whiteSpace: "nowrap",
             }}
           >
-            3D SHAPE
+            {IMAGES[activeIndex].name}
           </span>
         </div>
 
@@ -179,21 +180,21 @@ export default function ToonHub() {
         {/* Bottom-left text + nav buttons */}
         <div
           className="absolute bottom-6 left-4 sm:bottom-20 sm:left-24"
-          style={{ zIndex: 60, maxWidth: 320 }}
+          style={{ zIndex: 60, maxWidth: 380 }}
         >
           <p
-            className="mb-2 font-bold uppercase sm:mb-3 sm:text-[22px]"
-            style={{ color: "white", opacity: 0.95, letterSpacing: "0.02em", fontSize: isMobile ? "1rem" : undefined }}
+            key={`role-${activeIndex}`}
+            className="mb-1 font-bold uppercase sm:mb-2 sm:text-[18px]"
+            style={{ color: "white", opacity: 0.95, letterSpacing: "0.02em", fontSize: isMobile ? "0.875rem" : undefined }}
           >
-            TOONHUB FIGURINES
+            {IMAGES[activeIndex].role}
           </p>
           <p
+            key={`about-${activeIndex}`}
             className="mb-4 hidden text-xs leading-relaxed sm:mb-5 sm:block sm:text-sm"
             style={{ color: "white", opacity: 0.85, lineHeight: 1.6 }}
           >
-            The artwork is stunning, shipped fully prepared. The finish is a
-            vision, the 3D craft is flawless. Many thanks! Wishing you the win.
-            Order now.
+            {IMAGES[activeIndex].about}
           </p>
           <div className="flex gap-3">
             <button
@@ -235,28 +236,6 @@ export default function ToonHub() {
               <ArrowRight size={26} strokeWidth={2.25} />
             </button>
           </div>
-        </div>
-
-        {/* Bottom-right link */}
-        <div className="absolute bottom-6 right-4 sm:bottom-20 sm:right-10" style={{ zIndex: 60 }}>
-          <a
-            href="#"
-            className="flex items-center gap-2 transition-opacity duration-200 hover:opacity-100"
-            style={{
-              fontFamily: "'Anton', sans-serif",
-              fontSize: "clamp(20px, 4vw, 56px)",
-              fontWeight: 400,
-              color: "white",
-              opacity: 0.95,
-              letterSpacing: "-0.02em",
-              lineHeight: 1,
-              textTransform: "uppercase",
-              textDecoration: "none",
-            }}
-          >
-            DISCOVER IT
-            <ArrowRight style={{ width: isMobile ? 20 : 32, height: isMobile ? 20 : 32, strokeWidth: 2.25 }} />
-          </a>
         </div>
       </div>
     </div>
