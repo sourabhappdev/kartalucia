@@ -57,34 +57,51 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
   // Circular scroller: render the list three times and keep the viewport
   // parked in the middle copy so scrolling either way loops seamlessly.
   const scrollRef = useRef<HTMLDivElement>(null);
+  const segmentRef = useRef(0);
   const loopItems = [...testimonials, ...testimonials, ...testimonials];
+  const drag = useRef({ down: false, startX: 0, startScroll: 0 });
 
   useEffect(() => {
     const el = scrollRef.current;
-    if (!el) return;
+    if (!el || testimonials.length === 0) return;
+
+    // Exact width of one copy, measured from layout so the wrap jump lands on
+    // pixel-identical content (scrollWidth/3 drifts on sub-pixels and jitters).
+    const measure = () => {
+      const first = el.children[0] as HTMLElement | undefined;
+      const nextCopy = el.children[testimonials.length] as HTMLElement | undefined;
+      if (first && nextCopy) segmentRef.current = nextCopy.offsetLeft - first.offsetLeft;
+    };
 
     const recenter = () => {
-      el.scrollLeft = el.scrollWidth / 3;
+      measure();
+      if (segmentRef.current > 0) el.scrollLeft = segmentRef.current;
     };
-    // Wait a tick so widths are laid out before parking in the middle copy.
     const id = window.setTimeout(recenter, 0);
 
     const onScroll = () => {
-      const third = el.scrollWidth / 3;
-      if (el.scrollLeft <= third * 0.5) el.scrollLeft += third;
-      else if (el.scrollLeft >= third * 1.5) el.scrollLeft -= third;
+      const seg = segmentRef.current;
+      if (seg <= 0) return;
+      let delta = 0;
+      if (el.scrollLeft < seg * 0.5) delta = seg;
+      else if (el.scrollLeft > seg * 1.5) delta = -seg;
+      if (delta) {
+        el.scrollLeft += delta;
+        // Keep an in-progress drag consistent so it doesn't snap back.
+        if (drag.current.down) drag.current.startScroll += delta;
+      }
     };
     el.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', measure);
 
     return () => {
       window.clearTimeout(id);
       el.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', measure);
     };
   }, [testimonials.length]);
 
   // Drag-to-scroll for mouse users (touch/trackpad scroll natively).
-  const drag = useRef({ down: false, startX: 0, startScroll: 0 });
-
   const onPointerDown = (e: React.PointerEvent) => {
     if (e.pointerType !== 'mouse') return;
     const el = scrollRef.current;
@@ -190,7 +207,7 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
               key={i}
               className={`${
                 mode === 'dark' ? 'bg-black' : 'bg-white'
-              } border border-zinc-400 w-80 h-auto rounded-2xl p-5 relative shrink-0`}>
+              } flex flex-col border border-zinc-400 w-80 h-[340px] rounded-2xl p-5 relative shrink-0 overflow-hidden`}>
               <div onClick={() => openInNewTab(testimonial.social || '')} className="absolute top-5 right-5">
                 <RiTwitterXLine
                   className={`${mode === 'dark' ? 'text-white' : 'text-slate-800'} cursor-pointer`}
@@ -212,10 +229,10 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
                   </span>
                 </div>
               </div>
-              <div className="mt-5 mb-1">
-                <span className={`${mode === 'dark' ? 'text-slate-200' : 'text-black'}`}>{testimonial.text}</span>
+              <div className={`mt-5 mb-1 line-clamp-4 ${mode === 'dark' ? 'text-slate-200' : 'text-black'}`}>
+                {testimonial.text}
               </div>
-              <div className={`${mode === 'dark'? 'bg-zinc-200' : 'bg-slate-100'}  w-full h-12 mt-4 rounded-lg flex justify-between items-center p-2 relative`}>
+              <div className={`${mode === 'dark'? 'bg-zinc-200' : 'bg-slate-100'}  w-full h-12 mt-auto shrink-0 rounded-lg flex justify-between items-center p-2 relative`}>
                 {currentPlayingIndex !== index ? (
                   <span onClick={() => handlePlay(index)}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`${mode === 'dark'? 'text-zinc-900' : 'text-slate-600'} size-10 `}>
