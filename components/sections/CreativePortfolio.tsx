@@ -168,7 +168,7 @@ function MobilePortfolioCard({ src, label }: { src: string; label: string }) {
   }, []);
 
   return (
-    <div className="overflow-hidden rounded-xl border border-[var(--line)] bg-black">
+    <div className="relative aspect-[2/1] overflow-hidden rounded-xl border border-[var(--line)] bg-black">
       <video
         ref={videoRef}
         src={src}
@@ -176,10 +176,13 @@ function MobilePortfolioCard({ src, label }: { src: string; label: string }) {
         loop
         playsInline
         preload="metadata"
-        className="aspect-[2/1] w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover"
       />
-      <div className="px-4 py-3">
-        <span className="font-mono text-xs uppercase tracking-[0.14em] text-[var(--muted)]">
+      {/* Scrim for legibility */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      {/* Title overlay */}
+      <div className="pointer-events-none absolute bottom-0 left-0 p-4">
+        <span className="font-mono text-xs uppercase tracking-[0.14em] text-white">
           {label}
         </span>
       </div>
