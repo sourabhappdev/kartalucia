@@ -34,10 +34,24 @@
   --color-canvas: var(--canvas);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
+  --color-muted-foreground: #a1a1aa;
   --color-faint: var(--faint);
   --color-line: var(--line);
   --color-accent: var(--accent);
   --color-flare: var(--flare);
+  --color-background: var(--canvas);
+  --color-foreground: var(--ink);
+  --color-primary: #ffffff;
+  --color-primary-foreground: #000000;
+  --color-secondary: #27272a;
+  --color-secondary-foreground: #ffffff;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #27272a;
+  --color-input: #27272a;
+  --color-ring: #d4d4d8;
+  --color-card: #09090b;
+  --color-card-foreground: #fafafa;
 
   --font-display: "Clash Display", ui-sans-serif, sans-serif;
   --font-body: "Clash Display", ui-sans-serif, sans-serif;
@@ -119,6 +133,26 @@ html.lenis body {
 }
 .marquee-viewport:hover .marquee-track {
   animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap, 1rem))); }
+}
+
+.mask-x-from-80\% {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%);
+  mask-image: linear-gradient(to right, transparent 0%, black 20%);
+}
+
+.mask-y-from-75\% {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+}
+
+.mask-x-from-75\% {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 25%);
+  mask-image: linear-gradient(to right, transparent 0%, black 25%);
 }
 
 @media (prefers-reduced-motion: reduce) {
