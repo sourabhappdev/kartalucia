@@ -4,7 +4,6 @@ import CreativePartners from "@/components/sections/CreativePartners";
 import CreativePortfolio from "@/components/sections/CreativePortfolio";
 import ToonHub from "@/components/sections/ToonHub";
 import Testimonials from "@/components/sections/Testimonials";
-import Testimonials2 from "@/components/sections/Testimonials2";
 
 export default function Home() {
   return (
@@ -16,7 +15,6 @@ export default function Home() {
         <CreativePortfolio />
         <ToonHub />
         <Testimonials />
-        <Testimonials2 />
       </main>
     </>
   );
