@@ -21,31 +21,28 @@ interface ComponentProps {
   testimonials: Testimonial[];
 }
 
-const WaveVariants = (): Variants[] => {
-  const waveVariants: Variants[] = [];
-  for (let i = 0; i < 30; i++) {
-    waveVariants.push({
-      initial: {
-        scaleY: 1.5,
-        transition: {
-          duration: 0.5,
-        },
-      },
-      animate: {
-        scaleY: [1, Math.random() * 1.2 + 1, 1],
-        transition: {
-          duration: Math.random() * 0.5 + 0.5,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          delay: Math.random() * 0.5,
-        },
-      },
-    });
-  }
-  return waveVariants;
+const seededRandom = (seed: number) => {
+  const x = Math.sin(seed * 9301 + 49297) * 49297;
+  return x - Math.floor(x);
 };
 
-const waveVariants = WaveVariants();
+const NUM_BARS = 30;
+const waveHeights = Array.from({ length: NUM_BARS }, (_, i) => seededRandom(i + 1) * 20 + 5);
+const waveVariants: Variants[] = Array.from({ length: NUM_BARS }, (_, i) => ({
+  initial: {
+    scaleY: 1.5,
+    transition: { duration: 0.5 },
+  },
+  animate: {
+    scaleY: [1, seededRandom(i + 100) * 1.2 + 1, 1],
+    transition: {
+      duration: seededRandom(i + 200) * 0.5 + 0.5,
+      repeat: Infinity,
+      ease: 'easeInOut',
+      delay: seededRandom(i + 300) * 0.5,
+    },
+  },
+}));
 
 export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
   const [currentPlayingIndex, setCurrentPlayingIndex] = useState<number | null>(null);
@@ -191,7 +188,7 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
                       className={`${mode === 'dark'? 'bg-zinc-900' : 'bg-slate-600'}`}
                       style={{
                         width: '3px',
-                        height: `${Math.random() * 20 + 5}px`,
+                        height: `${waveHeights[i]}px`,
                         margin: '0 2px',
                         borderRadius: '2px',
                       }}

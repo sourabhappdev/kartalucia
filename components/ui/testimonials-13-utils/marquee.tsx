@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ComponentProps } from "react";
+import { ComponentProps, CSSProperties } from "react";
 
 export const Marquee = ({
   className,
@@ -20,8 +20,10 @@ export const Marquee = ({
       <div
         className="flex w-max animate-[marquee_var(--duration,40s)_linear_infinite] group-hover:[animation-play-state:paused]"
         style={{
-          "--gap": props.style?.["--gap"] || "1rem",
-        } as React.CSSProperties}
+          "--gap":
+            (props.style as Record<string, string> | undefined)?.["--gap"] ||
+            "1rem",
+        } as CSSProperties}
       >
         {children}
         {children}
