@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, IBM_Plex_Mono, Geist } from "next/font/google";
+import { Inter, IBM_Plex_Mono, Geist, Anton } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import { cn } from "@/lib/utils";
@@ -19,6 +19,13 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const anton = Anton({
+  variable: "--font-anton",
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Karta Lucia — Creative Content Lab",
   description:
@@ -31,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn(inter.variable, plexMono.variable, "font-sans", geist.variable)}>
+    <html lang="en" className={cn(inter.variable, plexMono.variable, anton.variable, "font-sans", geist.variable)}>
       <body>
         <SmoothScroll>{children}</SmoothScroll>
       </body>
