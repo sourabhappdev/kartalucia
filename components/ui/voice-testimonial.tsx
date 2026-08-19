@@ -207,7 +207,7 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
               key={i}
               className={`${
                 mode === 'dark' ? 'bg-black' : 'bg-white'
-              } flex flex-col border border-zinc-400 w-80 h-[340px] rounded-2xl p-5 relative shrink-0 overflow-hidden`}>
+              } flex flex-col border border-zinc-400 w-80 rounded-2xl p-5 relative shrink-0 overflow-hidden`}>
               <div onClick={() => openInNewTab(testimonial.social || '')} className="absolute top-5 right-5">
                 <RiTwitterXLine
                   className={`${mode === 'dark' ? 'text-white' : 'text-slate-800'} cursor-pointer`}
@@ -215,13 +215,15 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
                 />
               </div>
               <div className="flex items-center">
-                <Image
-                  src={testimonial.image || 'https://via.placeholder.com/50'}
-                  alt="profile"
-                  width={50}
-                  height={50}
-                  className="rounded-full"
-                />
+                <div className="relative h-[50px] w-[50px] shrink-0 overflow-hidden rounded-full">
+                  <Image
+                    src={testimonial.image || 'https://via.placeholder.com/50'}
+                    alt="profile"
+                    fill
+                    sizes="50px"
+                    className="object-cover"
+                  />
+                </div>
                 <div className="flex flex-col pl-4">
                   <span className={`${mode === 'dark' ? 'text-white' : 'text-black'}`}>{testimonial.name}</span>
                   <span className={`${mode === 'dark' ? 'text-zinc-300' : 'text-zinc-600'} text-sm`}>
@@ -229,7 +231,7 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
                   </span>
                 </div>
               </div>
-              <div className={`mt-5 mb-1 line-clamp-4 ${mode === 'dark' ? 'text-slate-200' : 'text-black'}`}>
+              <div className={`mt-5 mb-1 h-24 line-clamp-4 ${mode === 'dark' ? 'text-slate-200' : 'text-black'}`}>
                 {testimonial.text}
               </div>
               <div className={`${mode === 'dark'? 'bg-zinc-200' : 'bg-slate-100'}  w-full h-12 mt-3 shrink-0 rounded-lg flex justify-between items-center p-2 relative`}>
