@@ -21,36 +21,48 @@ export default function CreativePortfolio() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const CP_END = 0.35;
+
+      const heading = headingRef.current!;
+      const container = pinRef.current!;
+
+      gsap.set(heading, { fontSize: "3vw" });
+      const finalHeight = heading.offsetHeight;
+      gsap.set(heading, { fontSize: "9vw" });
+
+      const containerH = container.offsetHeight;
+      const targetY = containerH - 1.5 * 16 - 2 * 16 - finalHeight;
+      const targetX = -12;
+
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
-        end: () => `+=${window.innerHeight * 2.5}`,
+        end: () => `+=${window.innerHeight * 3}`,
         pin: pinRef.current,
         scrub: 0.3,
         invalidateOnRefresh: true,
         onUpdate(self) {
-          if (!self.isActive) return;
-          // progress 0→1 maps to (CARDS-1)→0 (scroll down = spiral up)
-          carouselRef.current?.setProgress((CARDS - 1) * (1 - self.progress));
+          const p = self.progress;
+
+          if (p <= CP_END) {
+            const t = p / CP_END;
+            gsap.set(heading, {
+              fontSize: `${9 - 6 * t}vw`,
+              y: targetY * t,
+              x: targetX * t,
+            });
+          } else {
+            gsap.set(heading, {
+              fontSize: "3vw",
+              y: targetY,
+              x: targetX,
+            });
+            carouselRef.current?.setProgress(
+              (CARDS - 1) * (1 - (p - CP_END) / (1 - CP_END))
+            );
+          }
         },
       });
-
-      // Heading: animate from below viewport to its resting position (top-left)
-      gsap.fromTo(
-        headingRef.current,
-        { y: "40vh", opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            end: "top top",
-            scrub: 0.3,
-          },
-        }
-      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -71,7 +83,7 @@ export default function CreativePortfolio() {
         {/* Heading — animates in before pin, rests at top-left */}
         <h2
           ref={headingRef}
-          className="pointer-events-none absolute left-5 top-6 z-[300] origin-bottom-left text-[3vw] uppercase leading-[0.9] text-[var(--ink)] md:left-8 md:text-[3vw]"
+          className="pointer-events-none absolute left-5 top-6 z-[300] origin-bottom-left text-[9vw] uppercase leading-[0.9] text-[var(--ink)] md:left-8"
         >
           Creative
           <br />
