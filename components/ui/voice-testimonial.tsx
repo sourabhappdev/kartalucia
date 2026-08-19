@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { RiTwitterXLine } from 'react-icons/ri';
 import { motion, Variants } from 'framer-motion';
+import { Marquee } from '@/components/ui/testimonials-13-utils/marquee';
 
 type Mode = 'light' | 'dark';
 
@@ -47,7 +48,6 @@ const waveVariants: Variants[] = Array.from({ length: NUM_BARS }, (_, i) => ({
 export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
   const [currentPlayingIndex, setCurrentPlayingIndex] = useState<number | null>(null);
   const [audioElements, setAudioElements] = useState<(HTMLAudioElement | null)[]>([]);
-  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     
@@ -103,18 +103,12 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
     setCurrentPlayingIndex(null);
   };
 
-  const handleLoadMore = () => {
-    setShowAll(true);
-  };
-
   const openInNewTab = (url: string) => {
     const win = window.open(url, '_blank');
     if (win) {
       win.focus();
     }
   };
-
-  const shouldShowLoadMore = testimonials.length > 6;
 
   return (
     <div>
@@ -127,16 +121,13 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
         </div>
       </div>
       <div className="relative">
-        <div className={`flex justify-center items-center gap-5 flex-wrap shadow-black overflow-hidden ${showAll ? 'max-h-full' : 'max-h-[720px]'} relative`}>
-          {shouldShowLoadMore && !showAll && <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-10"></div>}
+        <Marquee className="mask-x-from-80% [--duration:60s] [--gap:1.25rem]" pauseOnHover>
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
               className={`${
                 mode === 'dark' ? 'bg-black' : 'bg-white'
-              } border border-zinc-400 w-80 h-auto rounded-2xl p-5 relative ${
-                !showAll && index >= 6 ? 'testimonial-partially-visible' : ''
-              }`}>
+              } border border-zinc-400 w-80 h-auto rounded-2xl p-5 relative shrink-0 mx-2.5`}>
               <div onClick={() => openInNewTab(testimonial.social || '')} className="absolute top-5 right-5">
                 <RiTwitterXLine
                   className={`${mode === 'dark' ? 'text-white' : 'text-slate-800'} cursor-pointer`}
@@ -201,16 +192,7 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
               </div>
             </div>
           ))}
-        </div>
-        {shouldShowLoadMore && !showAll && (
-          <div className="flex justify-center mt-8">
-            <button
-              className="px-5 py-2 bg-zinc-200 text-black rounded-md hover:bg-zinc-300 transition"
-              onClick={handleLoadMore}>
-              Load More
-            </button>
-          </div>
-        )}
+        </Marquee>
       </div>
     </div>
   );
