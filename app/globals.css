@@ -140,6 +140,13 @@ html.lenis body {
   to { transform: translateX(calc(-100% - var(--gap, 1rem))); }
 }
 
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 .mask-x-from-80\% {
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%);
   mask-image: linear-gradient(to right, transparent 0%, black 20%);

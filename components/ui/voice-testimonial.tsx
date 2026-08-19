@@ -1,10 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { RiTwitterXLine } from 'react-icons/ri';
 import { motion, Variants } from 'framer-motion';
-import { Marquee } from '@/components/ui/testimonials-13-utils/marquee';
 
 type Mode = 'light' | 'dark';
 
@@ -55,8 +54,57 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
   const [currentPlayingIndex, setCurrentPlayingIndex] = useState<number | null>(null);
   const [audioElements, setAudioElements] = useState<(HTMLAudioElement | null)[]>([]);
 
+  // Circular scroller: render the list three times and keep the viewport
+  // parked in the middle copy so scrolling either way loops seamlessly.
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const loopItems = [...testimonials, ...testimonials, ...testimonials];
+
   useEffect(() => {
-    
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const recenter = () => {
+      el.scrollLeft = el.scrollWidth / 3;
+    };
+    // Wait a tick so widths are laid out before parking in the middle copy.
+    const id = window.setTimeout(recenter, 0);
+
+    const onScroll = () => {
+      const third = el.scrollWidth / 3;
+      if (el.scrollLeft <= third * 0.5) el.scrollLeft += third;
+      else if (el.scrollLeft >= third * 1.5) el.scrollLeft -= third;
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      window.clearTimeout(id);
+      el.removeEventListener('scroll', onScroll);
+    };
+  }, [testimonials.length]);
+
+  // Drag-to-scroll for mouse users (touch/trackpad scroll natively).
+  const drag = useRef({ down: false, startX: 0, startScroll: 0 });
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType !== 'mouse') return;
+    const el = scrollRef.current;
+    if (!el) return;
+    drag.current = { down: true, startX: e.clientX, startScroll: el.scrollLeft };
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!drag.current.down) return;
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollLeft = drag.current.startScroll - (e.clientX - drag.current.startX);
+  };
+
+  const endDrag = () => {
+    drag.current.down = false;
+  };
+
+  useEffect(() => {
+
     const elements: (HTMLAudioElement | null)[] = [];
     testimonials.forEach((testimonial) => {
       if (testimonial.audio) {
@@ -127,13 +175,22 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
         </div>
       </div>
       <div className="relative">
-        <Marquee className="mask-x-from-80% [--duration:60s] [--gap:1.25rem]" pauseOnHover>
-          {testimonials.map((testimonial, index) => (
+        <div
+          ref={scrollRef}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerLeave={endDrag}
+          className="no-scrollbar flex cursor-grab gap-5 overflow-x-auto px-5 pb-4 active:cursor-grabbing"
+        >
+          {loopItems.map((testimonial, i) => {
+            const index = i % testimonials.length;
+            return (
             <div
-              key={index}
+              key={i}
               className={`${
                 mode === 'dark' ? 'bg-black' : 'bg-white'
-              } border border-zinc-400 w-80 h-auto rounded-2xl p-5 relative shrink-0 mx-2.5`}>
+              } border border-zinc-400 w-80 h-auto rounded-2xl p-5 relative shrink-0`}>
               <div onClick={() => openInNewTab(testimonial.social || '')} className="absolute top-5 right-5">
                 <RiTwitterXLine
                   className={`${mode === 'dark' ? 'text-white' : 'text-slate-800'} cursor-pointer`}
@@ -197,8 +254,9 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
                 </div>
               </div>
             </div>
-          ))}
-        </Marquee>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

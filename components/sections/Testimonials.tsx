@@ -67,7 +67,10 @@ export default function Testimonials() {
       id="testimonials"
       style={{ background: "var(--canvas)", paddingTop: "var(--section-gap)" }}
     >
-      <Component mode="dark" testimonials={testimonials} />
+      <Component
+        mode="dark"
+        testimonials={testimonials.map((t) => ({ ...t, audio: "test.wav" }))}
+      />
     </section>
   );
 }
