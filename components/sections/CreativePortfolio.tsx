@@ -179,10 +179,10 @@ function MobilePortfolioCard({ src, label }: { src: string; label: string }) {
         className="absolute inset-0 h-full w-full object-cover"
       />
       {/* Scrim for legibility */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-      {/* Title overlay */}
-      <div className="pointer-events-none absolute bottom-0 left-0 p-4">
-        <span className="font-mono text-xs uppercase tracking-[0.14em] text-white">
+      <div className="pointer-events-none absolute inset-0 bg-black/30" />
+      {/* Title overlay — centered */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-4">
+        <span className="text-center font-mono text-xs uppercase tracking-[0.14em] text-white">
           {label}
         </span>
       </div>
