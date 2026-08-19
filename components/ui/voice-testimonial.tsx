@@ -232,7 +232,7 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
               <div className={`mt-5 mb-1 line-clamp-4 ${mode === 'dark' ? 'text-slate-200' : 'text-black'}`}>
                 {testimonial.text}
               </div>
-              <div className={`${mode === 'dark'? 'bg-zinc-200' : 'bg-slate-100'}  w-full h-12 mt-auto shrink-0 rounded-lg flex justify-between items-center p-2 relative`}>
+              <div className={`${mode === 'dark'? 'bg-zinc-200' : 'bg-slate-100'}  w-full h-12 mt-3 shrink-0 rounded-lg flex justify-between items-center p-2 relative`}>
                 {currentPlayingIndex !== index ? (
                   <span onClick={() => handlePlay(index)}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`${mode === 'dark'? 'text-zinc-900' : 'text-slate-600'} size-10 `}>
