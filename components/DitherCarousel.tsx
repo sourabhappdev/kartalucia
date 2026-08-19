@@ -42,7 +42,7 @@ const DitherCarousel = forwardRef<DitherCarouselHandle>(function DitherCarousel(
   );
 
   return (
-    <div className="absolute inset-0">
+    <div className="absolute bottom-0 left-0 right-0 top-20">
       <canvas ref={canvasRef} className="h-full w-full" />
     </div>
   );

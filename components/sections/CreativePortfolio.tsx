@@ -21,8 +21,6 @@ export default function CreativePortfolio() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const CP_END = 0.35;
-
       const heading = headingRef.current!;
       const container = pinRef.current!;
 
@@ -34,33 +32,38 @@ export default function CreativePortfolio() {
       const targetY = containerH - 1.5 * 16 - 2 * 16 - finalHeight;
       const targetX = -12;
 
+      const animH = window.innerHeight * 1.2;
+
+      gsap.set(headingRef.current, { position: "absolute" });
+
+      gsap.fromTo(
+        heading,
+        { fontSize: "9vw", y: 0, x: 0 },
+        {
+          fontSize: "3vw",
+          y: targetY,
+          x: targetX,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: () => `+=${animH}`,
+            scrub: 0.3,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
-        end: () => `+=${window.innerHeight * 3}`,
+        end: () => `+=${window.innerHeight * 2.5}`,
         pin: pinRef.current,
         scrub: 0.3,
         invalidateOnRefresh: true,
         onUpdate(self) {
-          const p = self.progress;
-
-          if (p <= CP_END) {
-            const t = p / CP_END;
-            gsap.set(heading, {
-              fontSize: `${9 - 6 * t}vw`,
-              y: targetY * t,
-              x: targetX * t,
-            });
-          } else {
-            gsap.set(heading, {
-              fontSize: "3vw",
-              y: targetY,
-              x: targetX,
-            });
-            carouselRef.current?.setProgress(
-              (CARDS - 1) * (1 - (p - CP_END) / (1 - CP_END))
-            );
-          }
+          if (!self.isActive) return;
+          carouselRef.current?.setProgress((CARDS - 1) * (1 - self.progress));
         },
       });
     }, sectionRef);
