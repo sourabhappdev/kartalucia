@@ -56,25 +56,9 @@ export default function Nav() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50">
-        <div className="relative flex items-center justify-between px-5 py-4 md:px-8 md:py-6">
-          {/* left spacer keeps the wordmark optically centered */}
-          <div className="flex-1" />
-
-          <a
-            href="#hero"
-            onClick={(e) => {
-              e.preventDefault();
-              go("#hero");
-            }}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none"
-          >
-            <span className="font-display text-[15px] font-semibold uppercase tracking-[0.28em] text-[var(--ink)] md:text-[17px]">
-              {brand.name}
-            </span>
-          </a>
-
-          <div className="flex flex-1 items-center justify-end gap-6">
+      <header className="fixed inset-x-0 top-0 z-50 h-[60px] md:h-[72px]">
+        <div className="relative flex h-full items-center justify-between px-5 md:px-8">
+          <div className="flex flex-1 items-center gap-6">
             <nav className="hidden items-center gap-6 md:flex">
               {hero.actions.map((a) => (
                 <a
@@ -90,7 +74,22 @@ export default function Nav() {
                 </a>
               ))}
             </nav>
+          </div>
 
+          <a
+            href="#hero"
+            onClick={(e) => {
+              e.preventDefault();
+              go("#hero");
+            }}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none"
+          >
+            <span className="font-display text-[15px] font-semibold uppercase tracking-[0.28em] text-[var(--ink)] md:text-[17px]">
+              {brand.name}
+            </span>
+          </a>
+
+          <div className="flex flex-1 items-center justify-end gap-6">
             <button
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}

@@ -1,4 +1,4 @@
-@import url('https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700,800&f[]=clash-display@500,600,700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap');
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ */
@@ -39,8 +39,8 @@
   --color-accent: var(--accent);
   --color-flare: var(--flare);
 
-  --font-display: "Clash Display", "Switzer", ui-sans-serif, sans-serif;
-  --font-body: var(--font-inter), "Switzer", ui-sans-serif, sans-serif;
+  --font-display: "Clash Display", ui-sans-serif, sans-serif;
+  --font-body: "Clash Display", ui-sans-serif, sans-serif;
   --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
 }
 
@@ -119,18 +119,6 @@ html.lenis body {
 }
 .marquee-viewport:hover .marquee-track {
   animation-play-state: paused;
-}
-
-/* Social marquee */
-@keyframes social-marquee-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.social-marquee-track {
-  display: flex;
-  width: max-content;
-  will-change: transform;
-  animation: social-marquee-scroll 18s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

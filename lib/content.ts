@@ -98,16 +98,6 @@ export const ecosystem = {
   ] as EcosystemCard[],
 };
 
-export const social = {
-  label: "Social",
-  links: [
-    { label: "Instagram", href: "#" },
-    { label: "LinkedIn", href: "#" },
-    { label: "Behance", href: "#" },
-    { label: "Vimeo", href: "#" },
-  ],
-};
-
 export const contact = {
   label: "Get in touch",
   heading: "Let's Connect",
