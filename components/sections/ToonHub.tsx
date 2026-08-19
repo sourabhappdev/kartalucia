@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const IMAGES = [
@@ -113,12 +113,40 @@ export default function ToonHub() {
     [isAnimating]
   );
 
+  // Swipe gestures (mobile) — horizontal drag changes the active figurine.
+  // Vertical scroll is untouched since we only act past the horizontal threshold.
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    const threshold = 40;
+    // Only treat as a swipe when it's mostly horizontal.
+    if (Math.abs(dx) > threshold && Math.abs(dx) > Math.abs(dy)) {
+      navigate(dx < 0 ? "next" : "prev");
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
+
   return (
     <div
       className="relative w-full overflow-hidden bg-[var(--canvas)]"
       style={{ paddingTop: "var(--section-gap)" }}
     >
-      <div className="relative w-full" style={{ height: "100vh", overflow: "hidden" }}>
+      <div
+        className="relative w-full"
+        style={{ height: "100vh", overflow: "hidden" }}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
         {/* Grain overlay */}
         <div
           className="pointer-events-none absolute inset-0"
@@ -208,7 +236,7 @@ export default function ToonHub() {
           >
             {IMAGES[activeIndex].about}
           </p>
-          <div className="flex gap-3">
+          <div className="flex gap-3" style={{ display: isMobile ? "none" : "flex" }}>
             <button
               onClick={() => navigate("prev")}
               className="flex items-center justify-center rounded-full transition-transform duration-150 hover:scale-105"
