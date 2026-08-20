@@ -36,6 +36,8 @@ export default function SmoothScroll({
   const [lenis, setLenis] = useState<Lenis | null>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     gsap.registerPlugin(ScrollTrigger);
 
     const reduced = window.matchMedia(

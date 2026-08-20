@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { RiTwitterXLine } from 'react-icons/ri';
 import { motion, Variants } from 'framer-motion';
 
@@ -58,7 +58,7 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
   // parked in the middle copy so scrolling either way loops seamlessly.
   const scrollRef = useRef<HTMLDivElement>(null);
   const segmentRef = useRef(0);
-  const loopItems = [...testimonials, ...testimonials, ...testimonials];
+  const loopItems = useMemo(() => [...testimonials, ...testimonials, ...testimonials], [testimonials]);
   const drag = useRef({ down: false, startX: 0, startScroll: 0 });
 
   useEffect(() => {
@@ -143,7 +143,7 @@ export const Component: React.FC<ComponentProps> = ({ mode, testimonials }) => {
         }
       });
     };
-  }, [testimonials]);
+  }, [testimonials.map((t) => t.audio).join(',')]);
 
   const handlePlay = (index: number) => {
     if (currentPlayingIndex !== null && currentPlayingIndex !== index) {

@@ -32,13 +32,16 @@ export default function CreativePartners() {
       className="relative border-t border-[var(--line)] bg-[var(--canvas)] py-16 md:py-24"
     >
       <div className="mx-auto flex max-w-[1600px] flex-col gap-10 px-5 md:flex-row md:items-center md:gap-0 md:px-8">
-        {/* Left 30% — label */}
-        <div className="md:w-[30%] md:shrink-0">
+        {/* Left label */}
+        <div className="md:shrink-0">
           <MonoLabel>{partners.label}</MonoLabel>
         </div>
 
-        {/* Right 70% — two opposing marquee rows */}
-        <div className="flex flex-col gap-8 md:w-[70%] md:gap-10">
+        {/* Vertical divider */}
+        <div className="hidden md:block md:mx-6 md:h-16 md:w-px md:shrink-0 md:self-center" style={{ backgroundColor: "var(--line)" }} />
+
+        {/* Right — two opposing marquee rows */}
+        <div className="flex min-w-0 flex-col gap-8 md:flex-1 md:gap-10">
           <LogoRow />
           <LogoRow reverse />
         </div>
