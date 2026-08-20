@@ -91,6 +91,7 @@ export const cardFragment = /* glsl */ `
   uniform float uHover;
   uniform float uDim;
   uniform float uDimFade;
+  uniform float uCornerRadius;
 
   varying vec2 vUv;
   varying float vFacing;
@@ -105,6 +106,11 @@ export const cardFragment = /* glsl */ `
     // its light in the scene target for the blur chain to smear into streaks
     // across the frame, and hold the card in front of the ones behind it.
     if (entryHidden(vUv)) discard;
+
+    // Rounded corners
+    vec2 p = vUv - 0.5;
+    vec2 q = abs(p) - 0.5 + uCornerRadius;
+    if (length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - uCornerRadius > 0.0) discard;
 
     // Cover-fit the texture inside the card.
     vec2 uv = (vUv - 0.5) * uImageRatio + 0.5;

@@ -95,6 +95,7 @@ export function createCarousel(canvas, { onActiveChange } = {}) {
         uHover: { value: 0 },
         uDim: { value: 0 },
         uDimFade: { value: config.dimFade },
+        uCornerRadius: { value: config.cornerRadius },
         uEntry: { value: config.entry ? 1 : 0 },
         uEntryScale: { value: config.entryScale },
         uEntrySoftness: { value: config.entrySoftness },
@@ -384,6 +385,7 @@ export function createCarousel(canvas, { onActiveChange } = {}) {
       u.uFogNear.value = config.fogNear;
       u.uFogFar.value = config.fogFar;
       u.uFogStrength.value = config.fogStrength;
+      u.uCornerRadius.value = config.cornerRadius;
     }
 
     const c = post.compositeMaterial.uniforms;

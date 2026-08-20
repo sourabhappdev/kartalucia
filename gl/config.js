@@ -5,9 +5,10 @@ export const config = {
   radius: 3.8,
   pitch: 1.27,
   angleStep: -0.8,
-  curve: 1.0,
-  cardWidth: 3.2,
-  cardHeight: 1.6,
+  curve: 0.0,
+  cardWidth: 3. ,
+  cardHeight: 2.47,
+  cornerRadius: 0.12,
   shingle: 0.055,
   backfaceFade: 0,
 
@@ -92,7 +93,7 @@ export const config = {
   cardBufferScale: 0.5,
 
   // Motion bend
-  bend: 2.7,
+  bend: 0.0,
   bendMode: "horizontal",
   bendEase: 0.12,
   bendMaxVelocity: 0.07,
