@@ -2,7 +2,7 @@ const CDN = "https://framerusercontent.com";
 
 export const config = {
   // Helix
-  radius: 3.8,
+  radius: 4.5,
   pitch: 1.27,
   angleStep: -0.8,
   curve: 0.0,
